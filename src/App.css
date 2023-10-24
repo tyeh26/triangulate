@@ -1,5 +1,7 @@
 .App {
-  text-align: center;
+  background-color: #F7E7CE;
+  height: 100%;
+  padding: 1em;
 }
 
 .App-logo {
@@ -22,6 +24,22 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+.Main-content {
+  max-width:740px;
+  margin:0 auto;
+  padding: 1em;
+  border-radius:8px;
+  background-color:lightgray;
+}
+
+.Step-description {
+
+}
+
+.Map-container {
+  overflow:hidden;
 }
 
 .App-link {
