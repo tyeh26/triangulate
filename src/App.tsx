@@ -14,11 +14,34 @@ function App() {
       <Stack className="Main-content" spacing={2} divider={<Divider flexItem />}>
       <Carousel autoPlay={false}>
         <Paper className="Step-description">
-        On land, we rarely have to rely solely on a compass for navigating and orienting ourselves, but if we need, what's the impact of a bit of inaccuracy?
-
+          <h1>Introduction</h1>
+          <div>Using a compass and a paper map, you can pinpoint your location.</div>
+          <div>How accurrate is it really? How does compass accuracy affect your end result?</div>
+          <div>These next few diagrams and graphs will explore triangulation and compass accuracy.</div>
         </Paper>
-        <Paper>
-          next page
+        <Paper className="Step-description">
+          Triangulation overview
+        </Paper>
+        <Paper className="Step-description">
+          Bearing
+        </Paper>
+        <Paper className="Step-description">
+          Bearing/Course error
+        </Paper>
+        <Paper className="Step-description">
+          Triangulation detail & error
+        </Paper>
+        <Paper className="Step-description">
+          Triangulation with collinear points
+        </Paper>
+        <Paper className="Step-description">
+          Triangulation with orthogonal points
+        </Paper>
+        <Paper className="Step-description">
+          Triangulation with multiple points
+        </Paper>
+        <Paper className="Step-description">
+          Conclusion
         </Paper>
       </Carousel>
       <Paper className="Map-container">

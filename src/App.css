@@ -34,8 +34,12 @@
   background-color:lightgray;
 }
 
-.Step-description {
+h1 {
+  font-size: 1em;
+}
 
+.Step-description {
+  padding: 0.5em;
 }
 
 .Map-container {
