@@ -47,7 +47,8 @@ export default function Map(props) {
       center: [lng, lat],
       zoom: zoom,
       dragPan: false,
-      scrollZoom: false
+      scrollZoom: false,
+      keyboard: false
     });
 
     map.current.on('click', (e) => {

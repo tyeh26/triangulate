@@ -54,6 +54,7 @@ function App() {
         let majorStep = curStep[0];
         let minorStep = curStep[1];
 
+        if (majorStep == 8) return curStep;
         if (minorStep == steps[majorStep] && majorStep < steps.length) return [majorStep + 1, 0];
         if (minorStep < steps[majorStep]) return [majorStep, minorStep + 1];
         return curStep;
