@@ -43,7 +43,7 @@ export default function Map(props) {
 
     map.current = new maplibregl.Map({
       container: mapContainer.current,
-      style: `https://api.maptiler.com/maps/topo-v2/style.json?key=${API_KEY}`,
+      style: `https://api.maptiler.com/maps/outdoor-v2/style.json?key=${API_KEY}`,
       center: [lng, lat],
       zoom: zoom,
       dragPan: false,
@@ -907,9 +907,9 @@ export default function Map(props) {
   let makeLine = function(source, destination, opt={}) {
     if (opt.addDistance != null) {
       let bearing = geolib.getRhumbLineBearing(source, destination);
-      console.log(bearing);
+
       let distance = geolib.getDistance(source, destination);
-      console.log(distance);
+
       destination = geolib.computeDestinationPoint(source, distance + opt.addDistance, bearing);
     }
 

@@ -30,17 +30,12 @@ function App() {
 
   const changeChild = useCallback(
     (e: KeyboardEvent) => {
-      console.log(e);
       if (e.key === "ArrowLeft") {
         setStepForward(false);
         setStep(curStep => {
           let majorStep = curStep[0];
           let minorStep = curStep[1];
 
-          console.log('from')
-          console.log(curStep)
-          console.log(additionalPointsRef)
-          console.log('to...')
           if ((majorStep == 7 && minorStep == 1 && additionalPointsRef.current > 0)) {
             setAdditionalPoints(0);
             return [majorStep - 1, steps[majorStep - 1]];
