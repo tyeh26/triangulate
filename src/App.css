@@ -1,6 +1,8 @@
-.App {
+body {
   background-color: #F7E7CE;
-  height: 100%;
+}
+
+.App {
   padding: 1em;
 }
 
@@ -34,16 +36,39 @@
   background-color:lightgray;
 }
 
+.short-paper{
+  min-height: 105px;
+}
+
+.medium-paper {
+  min-height: 210px;
+}
+
+.medium-tall-paper {
+  min-height: 265px;
+}
+
+.tall-paper {
+  min-height:320px;
+}
+
+.paper-footer {
+  position:absolute;
+  bottom: 1em;
+}
+
 h1 {
   font-size: 1em;
 }
 
 .Step-description {
   padding: 0.5em;
+  position:relative;
 }
 
 .Map-container {
   overflow:hidden;
+  height:50vh;
 }
 
 .App-link {
