@@ -29,7 +29,7 @@ export default function Map(props) {
   const [lng] = useState(-122.28434512636386);
   const [lat] = useState(41.361691009970684);
   const [zoom] = useState(11);
-  const [API_KEY] = useState('zPvuG2Re1nlxs357VnsW');
+  const [API_KEY] = useState('ThOLipd3MzTdx9r4rqrD');
   
   const shastaBearing = geolib.getRhumbLineBearing(origin, shasta);
   const shastinaBearing = geolib.getRhumbLineBearing(origin, shastina);
