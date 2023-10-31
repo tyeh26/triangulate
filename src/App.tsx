@@ -110,7 +110,7 @@ function App() {
 
             <FadeInOut show={step[0] == 1 && step[1] >= 1}>
               <img src={elevationProfileBearing} width='70%' />
-              <p>With your compass, you measure the bearing to Gray Butte at 80° due east. <FadeInOut show={step[1] >= 2}> On your map, you draw an 80° line from Gray Butte until it intserects the trail.</FadeInOut><FadeInOut show={step[1] >=3}> You now know you are at the inteersection of the red lines.</FadeInOut></p>
+              <p>With your compass, you measure the bearing to Gray Butte at 80° due east. <FadeInOut show={step[1] >= 2}> On your map, you draw an 80° line from Gray Butte until it intserects the trail.</FadeInOut><FadeInOut show={step[1] >=3}> You now know you are at the intersection of the red lines.</FadeInOut></p>
 
             </FadeInOut>
         </Paper>
