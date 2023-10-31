@@ -7,6 +7,7 @@ import * as geolib from 'geolib'
 import compassIcon from './../static/img/compass.png'
 import personStandingIcon from './../static/img/person-standing.png'
 import mountainIcon from './../static/img/mountain.png'
+import routeJson from './../static/geo/route.json'
 import { getIntersectionOfLines } from './../lib/intersection.js'
 
 
@@ -36,6 +37,7 @@ export default function Map(props) {
   const shasta_line_center = geolib.getCenter([origin, shasta]);
   const shastina_line_center = geolib.getCenter([origin, shastina])
   const greyButteBearing = geolib.getRhumbLineBearing(origin, greyButte);
+  const greyButteLineCenter = geolib.getCenter([origin, greyButte]);
   
 
   useEffect(() => {
@@ -59,17 +61,6 @@ export default function Map(props) {
     const origin = ['-122.34852', '41.36669'];
     const distance = 1000 // 1609 meters in a mile
     const bearing = 70
-    
-
-    /*const el = document.createElement('div');
-    el.className = 'marker';
-    el.style.backgroundImage = `url(${compassIcon})`;
-    el.style.backgroundSize = "contain";
-    el.style.width = '32px';
-    el.style.height = '32px';
-    const marker = new Marker({ 'element': el})
-      .setLngLat(origin)
-      .addTo(map.current);*/
 
     map.current.on('load', function() {
       map.current.addSource('line-source', {
@@ -125,6 +116,27 @@ export default function Map(props) {
         }
       });
 
+
+    map.current.addSource('route', {
+      type: 'geojson',
+      data: routeJson
+    });
+
+    map.current.addLayer({
+        'id': 'route-layer',
+        'type': 'line',
+        'source': 'route',
+        'layout': {
+          'line-cap': 'round',
+          visibility: 'none'
+        },
+        'paint': {
+          'line-color': 'red',
+          'line-width': 3,
+          'line-opacity': 1
+        }
+      });
+
       map.current.loadImage(`${personStandingIcon}`,  (error, image) => {
         map.current.addImage('person', image);
       });
@@ -166,6 +178,12 @@ export default function Map(props) {
             });    
         }
       });
+      if (map.current.getLayer('route-layer')) {
+        map.current.setLayoutProperty(
+        'route-layer',
+        'visibility',
+        'none')
+      }
     }
 
     // sometimes we step through before sources are fully loaded.
@@ -195,24 +213,27 @@ export default function Map(props) {
         renderTriangulateOverviewPaper(props.step[1]);
         break;
       case 2:
-        renderBearingPaper(props.step[1]);
+        renderTriangulateOverviewContinuedPaper(props.step[1]);
         break;
       case 3:
-        renderBearingAndCourseError(props.step[1]);
+        renderBearingPaper(props.step[1]);
         break;
       case 4:
-        renderTriangulateErrorPaper(props.step[1]);
+        renderBearingAndCourseError(props.step[1]);
         break;
       case 5:
-        renderTriangulateCollinearPaper(props.step[1]);
+        renderTriangulateErrorPaper(props.step[1]);
         break;
       case 6:
-        renderTriangulateOrthogonalPaper(props.step[1]);
+        renderTriangulateCollinearPaper(props.step[1]);
         break;
       case 7:
-        renderMultipointTriangulation(props.step[1]);
+        renderTriangulateOrthogonalPaper(props.step[1]);
         break;
       case 8:
+        renderMultipointTriangulation(props.step[1]);
+        break;
+      case 9:
         renderConclusion(props.step[1]);
         break;
       }
@@ -269,17 +290,9 @@ export default function Map(props) {
       zoom: 11,
       center: [-122.28434512636386, 41.361691009970684]});
 
-    let point_data = {
-      'type': 'FeatureCollection',
-      'features': [{
-        'type': 'Feature',
-        'properties': {
-          'image': 'person',
-        },
-        'geometry': {
-          'type': 'Point',
-          'coordinates': origin}
-        },
+    let pointData = {
+      type: 'FeatureCollection',
+      features: [
         {
         'type': 'Feature',
         'properties': {
@@ -310,20 +323,107 @@ export default function Map(props) {
       }]
     };
 
-    map.current.getSource('point-source').setData(point_data);
+    
+
+    map.current.setLayoutProperty(
+      'route-layer',
+      'visibility',
+      'visible')
+    let lineData = {
+            'type': 'FeatureCollection',
+            'features': []
+            }
 
     if (step >= 2) {
-      let line_data = {
-        'type': 'Feature',
-        'geometry': {
-          'type': 'LineString',
-          'coordinates': [shastina, origin, shasta]
-        }
+
+      lineData.features.push(makeLineByBearing(greyButte, greyButteBearing + 180, 10000))
+
+      
+
+      let labelData = {
+        'type': 'FeatureCollection',
+        'features': [
+        {
+          'type': 'Feature',
+          'properties': {
+              'name': Math.round(greyButteBearing, 1) + '°',
+              'rotation': greyButteBearing - 90
+            },
+          'geometry': {
+            'type': 'Point',
+            'coordinates': [greyButteLineCenter.longitude, greyButteLineCenter.latitude]
+        }}
+        ]
       };
 
-      map.current.getSource('line-source').setData(line_data);
+      map.current.getSource('label-source').setData(labelData);
+    }
 
-      let label_data = {
+    map.current.getSource('line-source').setData(lineData);
+
+    if (step >= 3) {
+      pointData.features.push( {
+        'type': 'Feature',
+        'properties': {
+          'image': 'person'
+        },
+        'geometry': {
+          'type': 'Point',
+          'coordinates': origin
+        }
+      })
+    }
+
+    map.current.getSource('point-source').setData(pointData);
+  }
+
+  let renderTriangulateOverviewContinuedPaper = function(step) {
+    map.current.easeTo({
+      zoom: 11,
+      center: [-122.28434512636386, 41.361691009970684]});
+
+    let pointData = {
+      type: 'FeatureCollection',
+      features: [
+        {
+        'type': 'Feature',
+        'properties': {
+          'image': 'mountain'
+        },
+        'geometry': {
+          'type': 'Point',
+          'coordinates': greyButte}
+        },
+        {
+        'type': 'Feature',
+        'properties': {
+          'image': 'mountain'
+        },
+        'geometry': {
+          'type': 'Point',
+          'coordinates': shasta
+        }},
+        {
+        'type': 'Feature',
+        'properties': {
+          'image': 'mountain'
+        },
+        'geometry': {
+          'type': 'Point',
+          'coordinates': shastina
+        }
+      }]
+    };
+
+    
+
+    if (step >= 1) {
+      let lineData = {
+        type: 'FeatureCollection',
+        features: [makeLineByBearing(shasta, shastaBearing + 180, 15000)]
+      }
+
+      let labelData = {
         'type': 'FeatureCollection',
         'features': [
         {
@@ -335,22 +435,45 @@ export default function Map(props) {
           'geometry': {
             'type': 'Point',
             'coordinates': [shasta_line_center.longitude, shasta_line_center.latitude]
-        }},
-        {
+          }
+        }]
+      }
+
+      if (step >= 2) {
+        lineData.features.push(
+          makeLineByBearing(shastina, shastinaBearing + 180, 12000)
+        )
+
+        labelData.features.push({
           'type': 'Feature',
           'properties': {
-              'name': Math.round(shastinaBearing,1) + '°',
+              'name': Math.round(shastinaBearing, 1) + '°',
               'rotation': shastinaBearing - 90
             },
           'geometry': {
             'type': 'Point',
             'coordinates': [shastina_line_center.longitude, shastina_line_center.latitude]
-        }},
-        ]
-      };
+          }
+        })
 
-      map.current.getSource('label-source').setData(label_data);
+        pointData.features.push({
+          'type': 'Feature',
+          'properties': {
+            'image': 'person'
+          },
+          'geometry': {
+            'type': 'Point',
+            'coordinates': origin
+          }
+        })
+      }
+
+      map.current.getSource('line-source').setData(lineData);
+      map.current.getSource('label-source').setData(labelData);
     }
+
+    map.current.getSource('point-source').setData(pointData);
+
   }
 
   let renderBearingPaper = function(step) {
