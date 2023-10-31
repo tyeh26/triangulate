@@ -50,7 +50,9 @@ export default function Map(props) {
       zoom: zoom,
       dragPan: false,
       scrollZoom: false,
-      keyboard: false
+      keyboard: false,
+      doubleClickZoom: false
+
     });
 
     map.current.on('click', (e) => {
