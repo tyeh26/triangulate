@@ -336,15 +336,16 @@ export default function Map(props) {
             'features': []
             }
 
+    let labelData = {
+            'type': 'FeatureCollection',
+            'features': []
+            }
+
     if (step >= 2) {
 
       lineData.features.push(makeLineByBearing(greyButte, greyButteBearing + 180, 10000))
 
-      
-
-      let labelData = {
-        'type': 'FeatureCollection',
-        'features': [
+      labelData.features.push(
         {
           'type': 'Feature',
           'properties': {
@@ -354,12 +355,9 @@ export default function Map(props) {
           'geometry': {
             'type': 'Point',
             'coordinates': [greyButteLineCenter.longitude, greyButteLineCenter.latitude]
-        }}
-        ]
-      };
-
-      map.current.getSource('label-source').setData(labelData);
+        }})
     }
+    map.current.getSource('label-source').setData(labelData);
 
     map.current.getSource('line-source').setData(lineData);
 

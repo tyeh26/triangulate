@@ -56,17 +56,17 @@ function App() {
   );
 
   let stepForwardAction = function() {
-     setStepForward(true);
-        setStep(curStep => {
-          let majorStep = curStep[0];
-          let minorStep = curStep[1];
+    setStepForward(true);
+    setStep(curStep => {
+        let majorStep = curStep[0];
+        let minorStep = curStep[1];
 
-          if (majorStep == steps.length) return curStep;
-          if (minorStep == steps[majorStep] && majorStep < steps.length) return [majorStep + 1, 0];
-          if (minorStep < steps[majorStep]) return [majorStep, minorStep + 1];
-          return curStep;
-        }
-      )
+        if (majorStep + 1 == steps.length) return curStep;
+        if (minorStep == steps[majorStep] && majorStep < steps.length) return [majorStep + 1, 0];
+        if (minorStep < steps[majorStep]) return [majorStep, minorStep + 1];
+        return curStep;
+      }
+    )
   }
 
   let addPoint = function(e:React.MouseEvent<HTMLElement>) {
