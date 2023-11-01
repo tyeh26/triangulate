@@ -106,33 +106,34 @@ function App() {
             <p>Let's say you know you are on the trail in red.  From a point on the trail, you see the following features around you, Shastina, Mt. Shasta, and Gray Butte.</p>
 
 
-            <img src={elevationProfile} width='70%' height='100px' />
+            <img src={elevationProfile} width='70%' className='center-image' />
 
             <FadeInOut show={step[0] == 1 && step[1] >= 1}>
-              <img src={elevationProfileBearing} width='70%' />
+              <img src={elevationProfileBearing} width='70%' className='center-image'/>
               <p>With your compass, you measure the bearing to Gray Butte at 80° due east. <FadeInOut show={step[1] >= 2}> On your map, you draw an 80° line from Gray Butte until it intserects the trail.</FadeInOut><FadeInOut show={step[1] >=3}> You now know you are at the intersection of the red lines.</FadeInOut></p>
 
             </FadeInOut>
         </Paper>
         <Paper className="Step-description medium-paper">
         <h1>Triangulation Overview, continued</h1>
-          <p>If you have absolutely no idea where you are, you can take an additional bearing to orient yourself.
-            <FadeInOut show={step[1] >= 1}>&nbsp; You now know you are somewhere on the red 42° line to Mt. Shasta.</FadeInOut>
-            <FadeInOut show={step[1] >= 2}>&nbsp; Similar to the previous example, a bearing will pinpoint where along a known line you are.</FadeInOut>
+          <p>If you have absolutely no idea where you are, you can take an additional bearing.
+            <FadeInOut show={step[1] >= 1}>&nbsp;After you take a bearing to Shasta, you know you are somewhere on the red 42° line to Mt. Shasta.</FadeInOut>
+            <FadeInOut show={step[1] >= 2}>&nbsp;Similar to the previous example, intersecting lines identify your location.</FadeInOut>
           </p>
         </Paper>
         <Paper className="Step-description medium-paper">
           <h1>Taking a Bearing</h1>
           <p>Taking a bearing is as simple as pointing a compass and rotating the bezel until the needle aligns with the orienting arrow.</p>
           <p>A common rule of thumb is that a bearing is accurate to 2°, but how does this affect navigating and orienting?</p>
+          <small>Note: Declination is vital to accurate bearings, but will not be discussed.</small>
         </Paper>
         <Paper className="Step-description medium-paper">
-          <h1>Bearing & Course error</h1>
+          <h1>Bearing & Course Error</h1>
           <p>A bearing off by 2 degrees to the left or right over 1km could land you 35m left or right of your intended location.</p>
           <p>
             <FadeInOut show={step[0] == 4 && step[1] >= 1}>Your target error depends on the bearing error</FadeInOut>
             <FadeInOut show={step[0] == 4 && step[1] >= 2}> as well as distance.</FadeInOut>
-            <FadeInOut show={step[0] == 4 && step[1] >= 3}> Walking in a straight line, off by 2° to Mt. Shasta could put you off target by 367.  Easily correctable by visual cues along the way, but when triangulating, the errors compound.</FadeInOut>
+            <FadeInOut show={step[0] == 4 && step[1] >= 3}> Walking in a straight line, off by 2° to Mt. Shasta could put you off target by 367m.  Easily correctable by visual cues along the way, but when triangulating, the errors compound.</FadeInOut>
           </p>
         </Paper>
         <Paper className="Step-description tall-paper">
@@ -187,7 +188,7 @@ function App() {
           <p>In the field, you are limited by many factors including: visibility, map size & scale, and compass accuracy.  You can improve your triangulation accuracy further by choosing multiple points.  Each point will further narrow your resulting area.</p>
 
           <FadeInOut show={step[0] == 8 && step[1] >= 1}>
-            <p>Adding a third triangulation point significantly reduces our potential area by the triangle formed by the 3 intersecting lines. Try adding more. <FadeInOut show={additionalPoints >= 4}>Not all lines intersect, nor do all intersections shrink the triangulation error.</FadeInOut></p>
+            <p>Adding a third triangulation point significantly reduces our potential area by the triangle formed by the 3 intersecting lines. Try adding more (each additional bearing is randomly between 0-2° off). <FadeInOut show={additionalPoints >= 4}>Not all lines intersect, nor do all intersections shrink the triangulation error.</FadeInOut></p>
           </FadeInOut>
 
           <FadeInOut className='paper-footer' style={{marginLeft:'3.5em'}} show={step[0] == 8 && step[1] >= 1}>
